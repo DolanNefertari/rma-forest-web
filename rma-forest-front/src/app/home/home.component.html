@@ -1,142 +1,231 @@
-<div class="ed-element ed-container wv-boxed menu-wrapper wv-overflow_visible preset-menu-v2-charity sticky" id="ed-315777683">
-  <div class="inner">
-    <div class="ed-element ed-container mobile-cont wv-overflow_visible" id="ed-315777689">
-      <div class="inner">
-        <div class="ed-element ed-html menu-trigger" id="ed-315777692">
-          <div class="menu-trigger-box">
-            <div class="menu-trigger-inner"></div>
+<mat-toolbar class="navbar" [class.scrolled]="scrolled" [class.menu-open]="menuOpen">
+  <div class="spacer-left" [class.hide-on-scroll]="scrolled"></div>
+  
+  <div class="navbar__brand">
+    <a routerLink="/">
+      <img class="logo" src="assets/logos/logo-horizontal.png" alt="RMA Forest">
+    </a>
+  </div>  
+  
+  <div class="spacer-between"></div>
+
+  <!-- Botón hamburguesa (solo visible en móvil) -->
+  <button class="hamburger-btn" (click)="toggleMenu()" aria-label="Menú">
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+  </button>
+
+  <!-- Menú lateral (off-canvas) -->
+  <div class="mobile-menu-overlay" [class.active]="menuOpen" (click)="closeMenu()"></div>
+  <div class="mobile-menu" [class.active]="menuOpen">
+    <div class="mobile-menu-header">
+      <button class="close-menu-btn" (click)="closeMenu()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <nav class="mobile-menu-links">
+      <a mat-button href="#about" (click)="closeMenu()">Nosotros</a>
+      <a mat-button href="#projects" (click)="closeMenu()">Proyectos</a>
+      <a mat-button routerLink="/compliance" target="_blank" (click)="closeMenu()">Denuncias</a>
+    </nav>
+  </div>
+
+  <!-- Links de escritorio (se ocultan en móvil) -->
+  <nav class="navbar__links desktop-links" aria-label="Navegación principal">
+    <a mat-button href="#about">Nosotros</a>
+    <a mat-button href="#projects">Proyectos</a>
+    <a mat-button routerLink="/compliance" target="_blank">Denuncias</a> 
+  </nav>
+
+  <div class="spacer-right"></div>
+</mat-toolbar>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>Consultoría Ambiental y Forestal para un Futuro Sustentable</h1>
+    <p>
+      Apoyamos a la Industria, inmobiliarias, empresas eléctricas y gobiernos
+      locales con soluciones comprometidas con el medio ambiente.
+    </p>
+  </div>
+</section>
+
+<section id="about" class="about" (mouseenter)="pauseAutoRotate()" (mouseleave)="resumeAutoRotate()">
+  <div class="about-container">
+    <div class="about-text">
+      <span class="section-tag">Nosotros</span>
+      <h2>Consultoría Ambiental y Forestal para Sostenibilidad Integral</h2>
+      <p class="about-description">
+        <strong>RMA Forest</strong> es una empresa chilena especializada en consultoría ambiental forestal y agrícola. Contamos con un equipo técnico multidisciplinario con experiencia en evaluaciones de impacto ambiental, gestión forestal urbana y rural, y planes de manejo sustentable.
+      </p>
+      <div class="about-features">
+        <div 
+          class="feature" 
+          *ngFor="let feature of features" 
+          (click)="selectFeature(feature)"
+          [class.active]="selectedFeature.id === feature.id">
+          <mat-icon>{{ feature.icono }}</mat-icon>
+          <span>{{ feature.titulo }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-card" [ngStyle]="{'background-image': selectedFeature.fondo ? 'url(' + selectedFeature.fondo + ')' : 'none'}" [class.has-image]="selectedFeature.fondo">
+      <div class="card-overlay"></div>
+      <div class="card-content">
+        <mat-icon class="card-icon">{{ selectedFeature.icono }}</mat-icon>
+        <h3>{{ selectedFeature.titulo }}</h3>
+        <p>{{ selectedFeature.descripcion }}</p>
+        <div #statNumbers>
+          <ul class="card-stats" *ngIf="selectedFeature.stats">
+            <li *ngFor="let stat of selectedFeature.stats" class="stat-item">
+              <strong class="stat-number" [attr.data-target]="stat.valor" [attr.data-format]="stat.formato">0</strong>
+              <span>{{ stat.label }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="mision" class="mision">
+  <div class="container">
+    <span class="section-tag">Nuestra Esencia</span>
+    <h2 class="section-title">Crecimiento con respeto al medio ambiente</h2>
+    <p class="section-subtitle">
+      En RMA Forest ofrecemos soluciones técnicas y personalizadas para enfrentar los desafíos ambientales y forestales de distintos sectores productivos y públicos. Nuestro equipo combina experiencia en terreno, conocimiento normativo y una fuerte vocación por la sustentabilidad.
+    </p>
+
+    <div class="mision-grid">
+      <div class="mision-card" *ngFor="let item of misionItems">
+        <div class="card-icon">
+          <mat-icon>{{ item.icono }}</mat-icon>
+        </div>
+        <h3>{{ item.titulo }}</h3>
+        <p>{{ item.descripcion }}</p>
+      </div>
+    </div>
+
+    <div class="mision-quote">
+      <mat-icon class="quote-icon">format_quote</mat-icon>
+      <p>“La sustentabilidad no es una meta, es el camino que recorremos con cada proyecto”</p>
+      <span>— Equipo RMA Forest</span>
+    </div>
+  </div>
+</section>
+<section id="projects" class="projects" (mouseenter)="pauseAutoRotate()" (mouseleave)="resumeAutoRotate()">
+  <div class="container">
+    <h2 class="section-title">Nuestros Servicios</h2>
+    <p class="section-subtitle">
+      Soluciones personalizadas para cada sector
+    </p>
+
+    
+    <div class="tabs">
+      <button 
+        *ngFor="let tab of tabs" 
+        class="tab-btn" 
+        [class.active]="activeTab === tab.id"
+        (click)="activeTab = tab.id">
+        {{ tab.nombre }}
+      </button>
+    </div>
+
+    
+    <div class="tab-content">
+      
+      <div *ngIf="activeTab === 'inmobiliarias'" class="cards-grid">
+        <div class="card" *ngFor="let servicio of services.inmobiliarias">
+          <div class="card-icon">
+            <mat-icon>{{ servicio.icono }}</mat-icon>
           </div>
+          <h3>{{ servicio.titulo }}</h3>
+          <p>{{ servicio.descripcion }}</p>
+          <ul class="card-list">
+            <li *ngFor="let item of servicio.lista">{{ item }}</li>
+          </ul>
         </div>
       </div>
-    </div>
-    <div class="ed-element ed-menu wv-custom" id="ed-315777695">
-      <ul class="menu-level-0">
-        <li class="first"><a href="#about" class="first">NOSOTROS</a></li>
-        <li class="end"><a href="#partners" class="last">PROYECTOS</a></li>
-      </ul>
-    </div>
-    <div class="ed-element ed-logo logo" id="ed-315777686">
-      <a href="/">
-        <img src="/images/1024/16285970/vertical-BiArF6W5VJkiu5n2WTit6w.png" alt="" style="object-fit: cover;" />
-      </a>
-    </div>
-  </div>
-</div>
 
-<div class="ed-element ed-container banner preset-banner-v3-charity" id="ed-315777704">
-  <div class="background">
-    <div class="ed-element ed-image wv-bg" id="ed-315777707">
-      <div style="background-image: url('/images/1920/7002391/charity-hero.jpg');" class="background-image-holder"></div>
-    </div>
-  </div>
-  <div class="overlay" style="background-color: rgba(0, 0, 0, 0.4);"></div>
-  <div class="inner">
-    <div class="ed-element ed-container wv-boxed wv-spacer banner-content" id="ed-315777710">
-      <div class="inner" data-parallax-amount="40">
-        <div class="ed-element ed-headline custom-theme" id="ed-315777713">
-          <h1><span class="color-user-2">Consultoría Ambiental y Forestal para un Futuro Sustentable</span></h1>
+      
+      <div *ngIf="activeTab === 'electricas'" class="cards-grid">
+        <div class="card" *ngFor="let servicio of services.electricas">
+          <div class="card-icon">
+            <mat-icon>{{ servicio.icono }}</mat-icon>
+          </div>
+          <h3>{{ servicio.titulo }}</h3>
+          <p>{{ servicio.descripcion }}</p>
+          <ul class="card-list">
+            <li *ngFor="let item of servicio.lista">{{ item }}</li>
+          </ul>
         </div>
-        <div class="ed-element ed-spacer" id="ed-315777716">
-          <div class="space"></div>
-        </div>
-        <div class="ed-element ed-text custom-theme" id="ed-315777719">
-          <p style="text-align: center;">
-            <span class="color-background">
-              Apoyamos a la Industria - inmobiliarias - empresas eléctricas - Gobiernos Locales y Pequeños propietarios con soluciones técnicas y comprometidas con el medio ambiente
-            </span>
-          </p>
+      </div>
+
+      
+      <div *ngIf="activeTab === 'propietarios'" class="cards-grid">
+        <div class="card" *ngFor="let servicio of services.propietarios">
+          <div class="card-icon">
+            <mat-icon>{{ servicio.icono }}</mat-icon>
+          </div>
+          <h3>{{ servicio.titulo }}</h3>
+          <p>{{ servicio.descripcion }}</p>
+          <ul class="card-list">
+            <li *ngFor="let item of servicio.lista">{{ item }}</li>
+          </ul>
         </div>
       </div>
     </div>
   </div>
+</section>
+
+<!-- Botón flotante (se oculta al llegar al footer) -->
+<div class="floating-contact" [class.hidden]="isFooterVisible" (click)="openContactPopup()">
+  <mat-icon>chat</mat-icon>
+  <span>Contacto</span>
 </div>
 
-<div class="ed-element ed-container flex-justify-content-space-between preset-unequal-columns-v2-charity wv-boxed full-width" id="ed-315777725">
-  <div class="inner" id="about">
-    <div class="ed-element ed-container unequal-columns-box unequal-columns-box-flex" id="ed-315777728">
-      <div class="inner">
-        <div class="ed-element ed-text custom-theme" id="ed-315777731"><p>Nosotros</p></div>
-        <div class="ed-element ed-headline custom-theme" id="ed-315777737">
-          <h4>Consultoría Ambiental y Forestal para Sostenibilidad Integral</h4>
-        </div>
-        <div class="ed-element ed-text custom-theme" id="ed-315777743">
-          <p>
-            <strong>RMA forest</strong> es una empresa chilena especializada en consultoría ambiental forestal y agrícola. Contamos con un equipo técnico multidisciplinario con experiencia en evaluaciones de impacto ambiental, gestión forestal urbana y rural, y planes de manejo sustentable.
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="ed-element ed-container unequal-columns-box unequal-columns-box-shrink wv-overflow_visible" id="ed-315777752">
-      <div class="inner">
-        <div class="ed-element ed-image" id="ed-315777755">
-          <img src="/images/1024/16300183/Capturadepantalla2025-05-17120232-yfPMMhzemzyYyo5J-brppg.png" alt="" />
-        </div>
-      </div>
-    </div>
+<app-contact-popup #contactPopup></app-contact-popup>
+
+<!-- CTA dentro del footer (se muestra al llegar) -->
+<div class="footer-cta" [class.visible]="isFooterVisible">
+  <div class="footer-cta-overlay"></div>
+  <div class="footer-cta-content">
+    <h3>Hagamos un impacto positivo juntos</h3>
+    <button mat-raised-button class="cta-button" (click)="openContactPopup()">
+      <mat-icon>chat</mat-icon>
+      Contáctanos
+    </button>
+    <p>Cuéntanos sobre tu proyecto y evaluaremos la mejor estrategia ambiental.</p>
   </div>
 </div>
 
-<div class="ed-element ed-container overlay-cont animation-initial preset-overlay-v3-charity full-width" id="ed-315778130">
-  <div class="inner">
-    <div class="ed-element ed-headline custom-theme" id="ed-315778133">
-      <h2 class="center"><span class="color-user-2">CONTÁCTANOS</span></h2>
+<footer class="footer" #footerSection>
+  <div class="footer-content">
+    <!-- Logo y eslogan -->
+    <div class="footer-logo">
+      <img src="assets/logos/logo-vertical.png" alt="RMA Forest">
+      <p>Soluciones ambientales a tu disposición.</p>
     </div>
-    <div class="ed-element ed-container wv-overflow_visible wv-spacer wv-boxed preset-contact-form-v3-charity" id="ed-315778139">
-      <div class="inner">
-        <div class="ed-element ed-form-container" id="ed-315778142">
-          <form method="POST" action="">
-            <div class="ed-element ed-form-input" id="ed-315778145">
-              <input placeholder="Nombre Completo" required type="text" name="nombre" />
-            </div>
-            <div class="ed-element ed-form-email" id="ed-315778148">
-              <input placeholder="Email" required type="email" name="email" />
-            </div>
-            <div class="ed-element ed-form-textarea" id="ed-315778151">
-              <textarea rows="4" cols="30" placeholder="Mensaje" name="mensaje"></textarea>
-            </div>
-            <div class="ed-element ed-form-checkbox privacy" id="ed-315778154">
-              <label><input type="checkbox" required /> He leído y comprendido la política de privacidad.</label>
-            </div>
-            <div class="ed-element ed-form-button custom-theme" id="ed-315778160">
-              <button type="submit">ENVIAR</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<div class="ed-element ed-container wv-overflow_horizontal wv-boxed wv-spacer" id="ed-315777917">
-  <div class="inner" id="partners">
-    <div class="ed-element ed-headline custom-theme" id="ed-315777920"><h2>PROYECTOS</h2></div>
-  </div>
-</div>
+    <!-- Ubicación -->
+    <div class="footer-location">
+      <h4>Ubicación</h4>
+      <p>
+        <mat-icon>location_on</mat-icon>
+        Av. Cristóbal Colón #7000, dp 53-D<br>
+        Las Condes, Santiago, Chile
+      </p>
+    </div>
 
-<div class="ed-element ed-container full-width bg-wrapper parallax preset-fullscreen-text-on-background-v2-charity wv-boxed wv-spacer" id="ed-315777893">
-  <div class="overlay" style="background-color: rgba(0, 0, 0, 0.45);"></div>
-  <div class="inner" id="donate">
-    <div class="ed-element ed-container text-on-background-content wv-overflow_visible wv-spacer" id="ed-315777899">
-      <div class="inner">
-        <div class="ed-element ed-headline custom-theme" id="ed-315777902">
-          <h2><span class="color-user-2">Hagamos un impacto positivo juntos</span></h2>
-        </div>
-        <div class="ed-element ed-text custom-theme" id="ed-315777908">
-          <p style="text-align: center;">
-            <span class="color-user-2">
-              Cuéntanos sobre tu proyecto y evaluaremos la mejor estrategia ambiental para implementarlo.
-            </span>
-          </p>
-        </div>
-      </div>
+    <!-- Enlaces rápidos -->
+    <div class="footer-links">
+      <h4>Enlaces</h4>
+      <a routerLink="/compliance">Canal de Denuncias</a>
     </div>
   </div>
-</div>
 
-<div class="ed-element ed-container footer wv-boxed wv-overflow_visible preset-footer-thrud-v3-charity" id="ed-315778064">
-  <div class="inner">
-    <div class="ed-element ed-text custom-theme" id="ed-315778079">
-      <p>Soluciones ambientales a tu disposición. info@rmaforest.cl</p>
-    </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 RMA Forest. Todos los derechos reservados.</p>
   </div>
-</div>
+</footer>

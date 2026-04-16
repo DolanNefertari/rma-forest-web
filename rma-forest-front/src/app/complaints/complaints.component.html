@@ -1,0 +1,47 @@
+<div class="complaints-container">
+    <div class="complaints-card">
+      <div class="complaints-header">
+        <mat-icon class="header-icon">report_problem</mat-icon>
+        <h2>Canal de Denuncias</h2>
+        <p>Este espacio es confidencial y seguro. Puedes realizar tu denuncia de forma anónima si lo prefieres.</p>
+      </div>
+  
+      <form (ngSubmit)="onSubmit()" class="complaints-form">
+        <mat-checkbox [(ngModel)]="form.isAnonymous" name="isAnonymous">
+          Realizar denuncia de forma anónima
+        </mat-checkbox>
+  
+        <mat-form-field appearance="outline" *ngIf="!form.isAnonymous">
+          <mat-label>Nombre completo</mat-label>
+          <input matInput [(ngModel)]="form.name" name="name">
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" *ngIf="!form.isAnonymous">
+          <mat-label>Email de contacto</mat-label>
+          <input matInput type="email" [(ngModel)]="form.email" name="email">
+          <mat-icon matSuffix>email</mat-icon>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Asunto</mat-label>
+          <input matInput [(ngModel)]="form.subject" name="subject" required>
+          <mat-icon matSuffix>title</mat-icon>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Detalle de la denuncia</mat-label>
+            <textarea matInput rows="6" [(ngModel)]="form.message" name="message" resize="none" required></textarea>
+          <mat-icon matSuffix>description</mat-icon>
+        </mat-form-field>
+  
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading">
+            <mat-icon *ngIf="!loading">send</mat-icon>
+            <span *ngIf="!loading">Enviar denuncia</span>
+            <span *ngIf="loading">Enviando...</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
