@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { TitleService } from './services/title.service';
 
 @Component({
   selector: 'app-root',
@@ -8,5 +9,6 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('RmaForestFront');
+
+  private titleService = inject(TitleService );
 }

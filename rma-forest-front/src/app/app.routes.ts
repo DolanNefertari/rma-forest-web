@@ -8,10 +8,10 @@ import { AuthGuard } from './guards/auth-guard';
 import { PolicyComponent } from './policy/policy.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'compliance', component: ComplaintsComponent },
-  { path: 'admin-login', component: AdminLoginComponent },
-  { path: 'admin', component: AdminPanelComponent,canActivate: [AuthGuard] },
-  { path: 'policy', component: PolicyComponent },
+  { path: '', component: HomeComponent, data: { title: 'RMA Forest' } },
+  { path: 'compliance', component: ComplaintsComponent, data: { title: 'Canal de Denuncias - RMA Forest' } },
+  { path: 'admin-login', component: AdminLoginComponent, data: { title: 'Acceso Administrativo - RMA Forest' } },
+  { path: 'admin', component: AdminPanelComponent,canActivate: [AuthGuard], data: { title: 'Panel de Administración - RMA Forest' } },
+  { path: 'policy', component: PolicyComponent, data: { title: 'Política de Calidad - RMA Forest' } },
   { path: '**', redirectTo: '' },
 ];

@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ApiService } from '../../../services/api/api.service';
 import { CaptchaService } from '../../services/captcha.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-contact-popup',
@@ -38,7 +39,8 @@ export class ContactPopupComponent {
 
   constructor(
     private api: ApiService,
-    private captchaService: CaptchaService
+    private captchaService: CaptchaService,
+    private alertService: AlertService
   ) {}
 
   open() {
@@ -55,7 +57,7 @@ export class ContactPopupComponent {
   async onSubmit() {
     
     if (!this.form.privacy) {
-      alert('Debes aceptar la política de privacidad');
+      this.alertService.warning('Debes aceptar la política de privacidad');
       return;
     }
 
@@ -66,7 +68,7 @@ export class ContactPopupComponent {
 
     this.api.post('contact/send', payload).subscribe({
       next: (res: any) => {
-        alert(res.message);
+        this.alertService.success("Su mensaje ha sido enviado correctamente, pronto nos pondremos en contacto con usted.");
         if (res.success) {
           this.form = { nombre: '', email: '', mensaje: '', privacy: false };
           this.close();
@@ -74,13 +76,13 @@ export class ContactPopupComponent {
         this.loading = false;
       },
       error: () => {
-        alert('Error de conexión con el servidor');
+        this.alertService.error('Error de conexión con el servidor');
         this.loading = false;
       }
     });
     
   } catch (error) {
-    alert('Error al verificar el captcha. Intenta nuevamente.');
+    this.alertService.error('Error al verificar el captcha. Intenta nuevamente.');
     this.loading = false;
   }
   }

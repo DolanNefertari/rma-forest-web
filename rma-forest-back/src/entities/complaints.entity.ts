@@ -1,4 +1,4 @@
-// src/entities/complaints.entity.ts
+
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 
 @Entity('complaints')
@@ -6,7 +6,6 @@ export class Complaint {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // --- Campos existentes ---
   @Column({ length: 255 })
   subject: string;
 
@@ -25,18 +24,17 @@ export class Complaint {
   @Column({ type: 'enum', enum: ['received', 'in_review', 'closed'], default: 'received' })
   status: string;
 
-  // --- NUEVOS CAMPOS (agrega esto) ---
   @Column({ nullable: true })
-  relationship: string;      // Relación con la empresa
+  relationship: string;
 
   @Column({ nullable: true })
-  location: string;          // Lugar de los hechos
+  location: string;
 
   @Column({ nullable: true })
-  incidentDate: Date;        // Fecha del incidente
+  incidentDate: Date;
 
   @Column({ nullable: true })
-  accused: string;           // Persona denunciada
+  accused: string;
 
   @CreateDateColumn()
   createdAt: Date;

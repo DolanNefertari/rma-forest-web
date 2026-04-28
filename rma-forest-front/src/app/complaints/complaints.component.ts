@@ -9,6 +9,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { ApiService } from '../../services/api/api.service';
 import { CaptchaService } from '../services/captcha.service';
+import { AlertService } from '../services/alert.service';
 
 @Component({
   selector: 'app-complaints',
@@ -21,7 +22,7 @@ import { CaptchaService } from '../services/captcha.service';
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
-    MatSelectModule, // ← agregar
+    MatSelectModule,
   ],
   templateUrl: './complaints.component.html',
   styleUrls: ['./complaints.component.scss']
@@ -42,7 +43,6 @@ export class ComplaintsComponent {
     accused: ''
   };
 
-  // Opciones para el select de asunto
   subjectOptions = [
     'Delito comercial',
     'Acoso Laboral',
@@ -52,7 +52,6 @@ export class ComplaintsComponent {
     'Otros'
   ];
 
-  // Opciones para relación con la empresa
   relationshipOptions = [
     'Postulante',
     'Cliente',
@@ -62,76 +61,74 @@ export class ComplaintsComponent {
     'Otro'
   ];
 
-  constructor(private api: ApiService, private captchaService: CaptchaService) {}
+  constructor(
+    private api: ApiService, 
+    private captchaService: CaptchaService,
+    private alertService: AlertService
+  ) {}
 
-  // En el componente
 onSubjectChange() {
   if (this.form.subject !== 'Otros') {
-    this.form.subjectOther = ''; // Limpia el campo si no está seleccionado "Otros"
+    this.form.subjectOther = '';
   }
 }
 
 onRelationshipChange() {
   if (this.form.relationship !== 'Otro') {
-    this.form.relationshipOther = ''; // Limpia el campo si no está seleccionado "Otro"
+    this.form.relationshipOther = '';
   }
 }
 
   async onSubmit() {
-    // Determinar el valor final según selección
+    
+  
+    this.loading = true;
     const finalSubject = this.form.subject === 'Otros' ? this.form.subjectOther : this.form.subject;
     const finalRelationship = this.form.relationship === 'Otro' ? this.form.relationshipOther : this.form.relationship;
 
-    // Validación específica para "Otros"
     if (this.form.subject === 'Otros' && !this.form.subjectOther) {
-      alert('Debes especificar el asunto');
+      this.alertService.warning('Debes especificar el asunto');
       return;
     }
 
     if (this.form.relationship === 'Otro' && !this.form.relationshipOther) {
-      alert('Debes especificar tu relación con la empresa');
+      this.alertService.warning('Debes especificar tu relación con la empresa');
       return;
     }
-    // Validar asunto
     if (!this.form.subject) {
-      alert('Debes seleccionar un asunto');
+      this.alertService.warning('Debes seleccionar un asunto');
       return;
     }
     if (this.form.subject === 'Otros' && !this.form.subjectOther) {
-      alert('Debes especificar el asunto');
+      this.alertService.warning('Debes especificar el asunto');
       return;
     }
   
-    // Validar relación
     if (!this.form.relationship) {
-      alert('Debes seleccionar tu relación con la empresa');
+      this.alertService.warning('Debes seleccionar tu relación con la empresa');
       return;
     }
     if (this.form.relationship === 'Otro' && !this.form.relationshipOther) {
-      alert('Debes especificar tu relación con la empresa');
+      this.alertService.warning('Debes especificar tu relación con la empresa');
       return;
     }
   
-    // Validar descripción
     if (!this.form.message) {
-      alert('Debes describir los hechos con detalle');
+      this.alertService.warning('Debes describir los hechos con detalle');
       return;
     }
   
-    // Validar email si no es anónimo
     if (!this.form.isAnonymous && !this.form.email) {
-      alert('Email es requerido para denuncias no anónimas');
+      this.alertService.warning('Email es requerido para denuncias no anónimas');
       return;
     }
     let captchaToken = '';
   try {
     captchaToken = await this.captchaService.executeCaptcha('submit_complaint');
   } catch (error) {
-    alert('Error al verificar el captcha. Intenta nuevamente.');
+    this.alertService.error('Error al verificar el captcha. Intenta nuevamente.');
     return;
   }
-  
-    this.loading = true;
   
     this.api.post('complaints/create', {
       subject: finalSubject,
@@ -146,9 +143,8 @@ onRelationshipChange() {
       recaptchaToken:captchaToken
     }).subscribe({
       next: (res: any) => {
-        alert(res.message);
+        this.alertService.success("Su denuncia ha sido enviada correctamente, pronto nos pondremos en contacto contigo.");
         if (res.success) {
-          // Reset form
           this.form = {
             isAnonymous: false,
             name: '',
@@ -166,8 +162,7 @@ onRelationshipChange() {
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error:', err);
-        alert('Error al enviar la denuncia. Intenta nuevamente.');
+        this.alertService.error('Error al enviar la denuncia. Intenta nuevamente.');
         this.loading = false;
       }
     });

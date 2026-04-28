@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ContactPopupComponent } from '../components/contact-popup/contact-popup.component';
 import { RouterModule } from '@angular/router';
+import { AlertService } from '../services/alert.service';
 
 @Component({
   standalone: true,
@@ -32,8 +33,7 @@ import { RouterModule } from '@angular/router';
 })
 export class HomeComponent implements AfterViewInit{
   @ViewChild("contactPopup") contactPopup!: ContactPopupComponent;
-  @ViewChild("footerSection") footerSection!: ElementRef; @ViewChild('statNumbers') statNumbers!: ElementRef; // referencia a los números
-  // para animar solo una vez
+  @ViewChild("footerSection") footerSection!: ElementRef; @ViewChild('statNumbers') statNumbers!: ElementRef;
 
   private http = inject(HttpClient);
   serviceModel = new ServiceModel();
@@ -49,7 +49,7 @@ export class HomeComponent implements AfterViewInit{
   activeTab: string = 'inmobiliarias'; 
   misionItems: any = [];
   private autoRotateInterval: any;
-  currentFeatureIndex = 0; // para about features
+  currentFeatureIndex = 0;
   currentTabIndex = 0;
 
   tabs = [
@@ -96,32 +96,9 @@ export class HomeComponent implements AfterViewInit{
   ngOnDestroy() {
     this.stopAutoRotate();
   }
-  
-  onSubmit() {
-    if (!this.form.privacy) {
-      alert('Debes aceptar la política de privacidad');
-      return;
-    }
-  
-    this.http.post('http://localhost:3000/contact/send', {
-      nombre: this.form.nombre,
-      email: this.form.email,
-      mensaje: this.form.mensaje,
-      privacy: this.form.privacy
-    }).subscribe({
-      next: (res: any) => {
-        alert(res.message);
-        if (res.success) {
-          this.form = { nombre: '', email: '', mensaje: '', privacy: false };
-        }
-      },
-      error: () => alert('Error de conexión con el servidor')
-    });
-  }
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
-    // Evita el scroll del body cuando el menú está abierto
     if (this.menuOpen) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -141,16 +118,14 @@ export class HomeComponent implements AfterViewInit{
 
   startAutoRotate() {
     this.autoRotateInterval = setInterval(() => {
-      // Rotar features del about
       this.currentFeatureIndex = (this.currentFeatureIndex + 1) % this.features.length;
       this.selectFeature(this.features[this.currentFeatureIndex]);
       
-      // Rotar tabs de servicios
       this.currentTabIndex = (this.currentTabIndex + 1) % this.tabs.length;
       this.activeTab = this.tabs[this.currentTabIndex].id;
       
       this.cdRef.detectChanges();
-    }, 3000); // Cambia cada 5 segundos
+    }, 3000);
   }
 
   private observeStats() {
@@ -175,12 +150,10 @@ export class HomeComponent implements AfterViewInit{
     }
   }
 
-  // Pausar al hacer hover en la sección
   pauseAutoRotate() {
     this.stopAutoRotate();
   }
 
-  // Reanudar al salir del hover
   resumeAutoRotate() {
     this.startAutoRotate();
   }
@@ -196,11 +169,9 @@ export class HomeComponent implements AfterViewInit{
       const animate = (currentTime: number) => {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        // easing easeOutCubic
         const easeProgress = 1 - Math.pow(1 - progress, 3);
         const current = Math.floor(target * easeProgress);
         
-        // Si es el último paso, mostrar el formato final
         if (progress >= 1) {
           stat.textContent = format;
           return;
@@ -214,12 +185,9 @@ export class HomeComponent implements AfterViewInit{
     });
   }
   
-  // Reiniciar animación al cambiar de card
   selectFeature(feature: any) {
     this.selectedFeature = feature;
-    // Reiniciar bandera para permitir animación
     this.animatedStats = false;
-    // Pequeño delay para que el DOM se actualice
     setTimeout(() => {
       this.animateStats();
       this.animatedStats = true;

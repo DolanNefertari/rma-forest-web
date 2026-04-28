@@ -24,14 +24,14 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./admin-login.component.scss']
 })
 export class AdminLoginComponent {
-  username = '';      // ← nuevo campo
+  username = '';
   password = '';
   loading = false;
   error = false;
 
   constructor(
     private router: Router,
-    private http: HttpClient  // ← inyectamos HttpClient
+    private http: HttpClient 
   ) {}
 
   onSubmit() {

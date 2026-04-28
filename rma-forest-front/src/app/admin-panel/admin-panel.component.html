@@ -13,34 +13,27 @@
     </div>
   </div>
 
-  <!-- Estado de carga -->
   <div *ngIf="loading" class="loading-container">
     <mat-spinner diameter="40"></mat-spinner>
     <p>Cargando denuncias...</p>
   </div>
 
-  <!-- Error -->
   <div *ngIf="error" class="error-message">
     <mat-icon>error</mat-icon>
     <p>{{ error }}</p>
     <button mat-raised-button (click)="loadComplaints()">Reintentar</button>
   </div>
 
-  <!-- Lista de denuncias -->
   <div *ngIf="!loading && !error && complaints.length > 0" class="complaints-list">
     <div *ngFor="let item of complaints" class="complaint-card" [class]="getStatusClass(item.status)">
   
-      <!-- Header: fecha + estado (solo visible en PC) + botón editar -->
       <div class="card-header">
-        <!-- Fecha (izquierda) -->
         <div class="header-left">
           <mat-icon class="date-icon">schedule</mat-icon>
           <span class="date">{{ item.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
         </div>
       
-        <!-- Grupo derecho (estado/selector + botón editar) -->
         <div class="header-right-group">
-          <!-- Estado (solo visible en PC) -->
           <div *ngIf="editingId !== item.id" class="status-desktop">
             <span class="status-badge" [class]="getStatusClass(item.status)">
               {{ getStatusLabel(item.status) }}
@@ -50,7 +43,6 @@
             </button>
           </div>
       
-          <!-- Selector y botones en modo edición (solo visible en PC) -->
           <div *ngIf="editingId === item.id" class="editing-desktop">
             <mat-form-field appearance="outline" class="status-select-small" [class]="getStatusClassForSelect(item.status)">
               <mat-select [(ngModel)]="tempStatus">
@@ -68,16 +60,12 @@
           </div>
         </div>
       </div>
-      <!-- Asunto -->
       <h3 class="card-subject">{{ item.subject }}</h3>
-    
-      <!-- Mensaje -->
+
       <p class="card-message">{{ item.message }}</p>
-    
-      <!-- Separador -->
+
       <div class="card-separator"></div>
-    
-      <!-- Emisor -->
+
       <div class="card-footer">
         <div *ngIf="!item.isAnonymous" class="sender-info">
           <mat-icon>person</mat-icon>
@@ -89,8 +77,6 @@
           <mat-icon>visibility_off</mat-icon>
           <span>Denuncia anónima</span>
         </div>
-        <!-- Dentro de complaint-card, después de card-footer -->
-<!-- Nuevos campos (dos columnas en PC, una en móvil) -->
 <div class="complaint-details">
   <div class="detail-row" *ngIf="item.relationship">
     <mat-icon>business</mat-icon>
@@ -110,7 +96,6 @@
   </div>
 </div>
     
-      <!-- Estado (solo visible en móvil) -->
       <div *ngIf="editingId !== item.id" class="status-mobile">
         <span class="status-label">Estado actual:</span>
         <span class="status-badge" [class]="getStatusClass(item.status)">
@@ -121,8 +106,6 @@
         </button>
       </div>
     
-      <!-- Modo edición (solo visible en móvil) -->
-      <!-- Modo edición (solo visible en móvil) -->
 <div *ngIf="editingId === item.id" class="editing-mobile">
   <div class="editing-mobile-row">
     <mat-form-field appearance="outline" class="status-select" [class]="getStatusClassForSelect(item.status)">
@@ -145,7 +128,6 @@
     </div>
   </div>
 
-  <!-- Mensaje cuando no hay denuncias -->
   <div *ngIf="!loading && !error && complaints.length === 0" class="empty-state">
     <mat-icon>inbox</mat-icon>
     <p>No hay denuncias registradas</p>

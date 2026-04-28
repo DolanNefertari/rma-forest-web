@@ -13,10 +13,9 @@ export class ComplaintsController {
     email?: string;
     isAnonymous: boolean;
     recaptchaToken: string;
-    // Nuevos campos
     relationship?: string;
     location?: string;
-    incidentDate?: string; // El frontend lo envía como string, puedes convertirlo a Date
+    incidentDate?: string;
     accused?: string;
   }) {
     try {

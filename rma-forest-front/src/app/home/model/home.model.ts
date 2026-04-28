@@ -87,7 +87,7 @@ export class AboutModel {
             { valor: 100, label: 'proyectos', formato: '100+' },
             { valor: 95, label: 'satisfacción', formato: '95%' }
           ],
-          fondo: 'assets/images/experience-bg.jpg'
+          fondo: 'assets/images/experience-bg.png'
         },
         {
           id: 'equipo',
@@ -95,32 +95,32 @@ export class AboutModel {
           icono: 'groups',
           descripcion: 'Ingenieros forestales, agrónomos y especialistas en normativa ambiental trabajando juntos.',
           stats: [
-            { valor: 5, label: 'profesionales', formato: '5' },   // ← 15 → 5
+            { valor: 5, label: 'profesionales', formato: '5' },
             { valor: 5, label: 'especialidades', formato: '5' }
           ],
-          fondo: 'assets/images/team-bg.jpg'
+          fondo: 'assets/images/team-bg.jpeg'
         },
         {
           id: 'hectareas',
-          titulo: 'Más de 3000 hectáreas evaluadas',   // ← título actualizado
+          titulo: 'Más de 3000 hectáreas evaluadas',
           icono: 'forest',
           descripcion: 'Hemos evaluado y gestionado miles de hectáreas, contribuyendo a la conservación y manejo sustentable.',
           stats: [
-            { valor: 3000, label: 'hectáreas evaluadas', formato: '3.000+' }, // ← 5000 → 3000
-            { valor: 100, label: 'proyectos', formato: '100+' }               // ← 2000 → 100
+            { valor: 3000, label: 'hectáreas evaluadas', formato: '3.000+' },
+            { valor: 100, label: 'proyectos', formato: '100+' }
           ],
           fondo: 'assets/images/forest-bg.jpg'
         },
         {
           id: 'clientes',
-          titulo: '+100 clientes atendidos',   // ← título actualizado
+          titulo: '+100 clientes atendidos',
           icono: 'handshake',
-          descripcion: 'Desde pequeños propietarios hasta grandes empresas eléctricas e inmobiliarias, confían en nuestros servicios.', // ← texto actualizado
+          descripcion: 'Desde pequeños propietarios hasta grandes empresas eléctricas e inmobiliarias, confían en nuestros servicios.',
           stats: [
-            { valor: 100, label: 'clientes', formato: '100+' },  // ← 200 → 100
+            { valor: 100, label: 'clientes', formato: '100+' },
             { valor: 95, label: 'recomienda', formato: '95%' }
           ],
-          fondo: 'assets/images/clients-bg.jpg'
+          fondo: 'assets/images/clients-bg.jpeg'
         }
       ];
       
@@ -130,7 +130,7 @@ export class MisionModel {
         {
           icono: 'psychology',
           titulo: 'Experiencia en terreno',
-          descripcion: 'Más de 5000 hectáreas evaluadas y 2000 proyectos de recolección de datos ambientales con éxito.'
+          descripcion: 'Más de 3000 hectáreas evaluadas y mas de 100 proyectos de recolección de datos ambientales con éxito.'
         },
         {
           icono: 'gavel',

@@ -426,6 +426,7 @@ $transition-normal: 0.3s ease;
         line-height: 1.5;
         max-width: 280px;
         margin-bottom: 1.5rem;
+        color: white;
         opacity: 0.9;
       }
 
@@ -914,17 +915,25 @@ $transition-normal: 0.3s ease;
       font-size: 1rem;
     }
 
-    a {
-      color: white;        // ← texto blanco
-      text-decoration: none;
-      display: inline-block;
-      font-size: 0.85rem;
-      opacity: 0.8;
-      transition: opacity 0.2s ease;
-
-      &:hover {
-        opacity: 1;
-        text-decoration: underline;
+    .footer-links-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      
+      li {
+        margin-bottom: 0.5rem;
+        
+        a {
+          color: white;
+          text-decoration: none;
+          opacity: 0.8;
+          transition: opacity 0.2s ease;
+          
+          &:hover {
+            opacity: 1;
+            text-decoration: underline;
+          }
+        }
       }
     }
   }

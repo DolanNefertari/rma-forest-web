@@ -30,17 +30,89 @@ export class EmailService {
     replyTo?: string;
   }) {
     try {
-      const htmlWithLogo = `
-      <div style="text-align: center; margin-bottom: 20px;">
-        <img src="https://rmaforest.cl/assets/logos/logo-horizontal.png" alt="RMA Forest" style="max-width: 200px;">
+      const htmlWithTemplate = `  
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>${options.subject}</title>
+      <style>
+        body {
+          margin: 0;
+          padding: 0;
+          font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+          background-color: #f4f7f9;
+        }
+        .email-container {
+          max-width: 600px;
+          margin: 0 auto;
+          background-color: #ffffff;
+          border-radius: 16px;
+          overflow: hidden;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .email-header {
+  background-color: #ffffff;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+        .email-body {
+          padding: 30px;
+          color: #1d3439;
+          line-height: 1.5;
+        }
+        .email-footer {
+          background-color: #e8f5e9;
+          padding: 15px;
+          text-align: center;
+          font-size: 12px;
+          color: #555;
+          border-top: 1px solid #c8e6c9;
+        }
+        .button {
+          display: inline-block;
+          background-color: #2e7d32;
+          color: white;
+          text-decoration: none;
+          padding: 10px 20px;
+          border-radius: 40px;
+          margin-top: 20px;
+          font-weight: 500;
+        }
+        .highlight {
+          color: #2e7d32;
+          font-weight: bold;
+        }
+        @media (max-width: 600px) {
+          .email-body {
+            padding: 20px;
+          }
+        }
+      </style>
+    </head>
+    <body style="margin: 0; padding: 20px; background-color: #f4f7f9;">
+      <div class="email-container">
+        <div class="email-header">
+          <img src="https://rmaforest.cl/assets/images/logos/logo-horizontal.png" alt="RMA Forest">
+        </div>
+        <div class="email-body">
+          ${options.html}
+        </div>
+        <div class="email-footer">
+          <p>RMA Forest SPA – Los Militares #5620 oficina 1813, Las Condes, Santiago, Chile</p>
+          <p>Este es un mensaje automático, por favor no responder a este correo.</p>
+        </div>
       </div>
-      ${options.html}
+    </body>
+    </html>
     `;
       const mailOptions = {
         from: options.from || `"RMA Forest" <${this.configService.get('SMTP_USER')}>`,
         to: options.to,
         subject: options.subject,
-        html: htmlWithLogo,
+        html: htmlWithTemplate,
         replyTo: options.replyTo,
       };
 

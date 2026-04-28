@@ -9,14 +9,12 @@
   
   <div class="spacer-between"></div>
 
-  <!-- Botón hamburguesa (solo visible en móvil) -->
   <button class="hamburger-btn" (click)="toggleMenu()" aria-label="Menú">
     <span class="hamburger-line"></span>
     <span class="hamburger-line"></span>
     <span class="hamburger-line"></span>
   </button>
 
-  <!-- Menú lateral (off-canvas) -->
   <div class="mobile-menu-overlay" [class.active]="menuOpen" (click)="closeMenu()"></div>
   <div class="mobile-menu" [class.active]="menuOpen">
     <div class="mobile-menu-header">
@@ -32,7 +30,6 @@
     </nav>
   </div>
 
-  <!-- Links de escritorio (se ocultan en móvil) -->
   <nav class="navbar__links desktop-links" aria-label="Navegación principal">
     <a mat-button href="#about">Nosotros</a>
     <a mat-button href="#projects">Proyectos</a>
@@ -181,7 +178,6 @@
   </div>
 </section>
 
-<!-- Botón flotante (se oculta al llegar al footer) -->
 <div class="floating-contact" [class.hidden]="isFooterVisible" (click)="openContactPopup()">
   <mat-icon>chat</mat-icon>
   <span>Contacto</span>
@@ -189,7 +185,6 @@
 
 <app-contact-popup #contactPopup></app-contact-popup>
 
-<!-- CTA dentro del footer (se muestra al llegar) -->
 <div class="footer-cta" [class.visible]="isFooterVisible">
   <div class="footer-cta-overlay"></div>
   <div class="footer-cta-content">
@@ -204,13 +199,11 @@
 
 <footer class="footer" #footerSection>
   <div class="footer-content">
-    <!-- Logo y eslogan -->
     <div class="footer-logo">
       <img src="assets/logos/logo-vertical.png" alt="RMA Forest">
       <p>Soluciones ambientales a tu disposición.</p>
     </div>
 
-    <!-- Ubicación -->
     <div class="footer-location">
       <h4>Ubicación</h4>
       <p>
@@ -220,11 +213,12 @@ Las Condes, Santiago, Chile
       </p>
     </div>
 
-    <!-- Enlaces rápidos -->
     <div class="footer-links">
       <h4>Enlaces</h4>
-      <a routerLink="/compliance">Canal de Denuncias</a>
-      <a routerLink="/policy">Política de Calidad</a>
+      <ul class="footer-links-list">
+        <li><a routerLink="/compliance" target="_blank">Canal de Denuncias</a></li>
+        <li><a routerLink="/policy" target="_blank">Política de Calidad</a></li>
+      </ul>
     </div>
   </div>
 

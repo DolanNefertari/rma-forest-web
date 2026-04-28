@@ -34,8 +34,8 @@ export class AdminPanelComponent implements OnInit {
   complaints: any[] = [];
   loading = false;
   error = '';
-  editingId: number | null = null; // ID de la denuncia que se está editando
-  tempStatus: string = ''; // Estado temporal mientras se edita
+  editingId: number | null = null;
+  tempStatus: string = '';
 
   statusOptions = [
     { value: 'received', label: 'Recibida' },
@@ -70,24 +70,20 @@ export class AdminPanelComponent implements OnInit {
     });
   }
 
-  // Iniciar edición
   startEdit(complaint: any) {
     this.editingId = complaint.id;
     this.tempStatus = complaint.status;
     this.cdr.detectChanges();
   }
 
-  // Cancelar edición
   cancelEdit() {
     this.editingId = null;
     this.tempStatus = '';
     this.cdr.detectChanges();
   }
 
-  // Guardar cambios
   saveStatus(complaint: any) {
     if (this.tempStatus === complaint.status) {
-      // No hubo cambios, solo cancelar edición
       this.cancelEdit();
       return;
     }
@@ -100,14 +96,6 @@ export class AdminPanelComponent implements OnInit {
         this.complaints = this.complaints.map(c => 
           c.id === complaintId ? { ...c, status: newStatus } : c
         );
-        // const index = this.complaints.findIndex(c => c.id === complaintId);
-
-        // if (index !== -1) {
-        //   this.complaints[index] = { 
-        //     ...this.complaints[index], 
-        //     status: newStatus 
-        //   };
-        // }
         
         console.log(`Complaint #${complaintId} status updated to ${newStatus}`);
         this.cancelEdit();
@@ -143,7 +131,6 @@ export class AdminPanelComponent implements OnInit {
     this.router.navigate(['/admin-login']);
   }
   exportToCSV() {
-    // Definir los encabezados del CSV
     const headers = [
       'ID',
       'Fecha y Hora',
@@ -155,7 +142,6 @@ export class AdminPanelComponent implements OnInit {
       'Email'
     ];
   
-    // Formatear fecha y hora sin comas
     const formatDateTime = (date: string) => {
       const d = new Date(date);
       const dia = d.getDate().toString().padStart(2, '0');
@@ -166,7 +152,6 @@ export class AdminPanelComponent implements OnInit {
       return `${dia}/${mes}/${año} ${horas}:${minutos}`;
     };
   
-    // Mapear los datos al formato CSV
     const rows = this.complaints.map(complaint => [
       complaint.id,
       formatDateTime(complaint.createdAt),
@@ -178,20 +163,16 @@ export class AdminPanelComponent implements OnInit {
       complaint.email || '-'
     ]);
   
-    // Combinar encabezados y filas
     const csvContent = [
       headers.join(','),
       ...rows.map(row => row.join(','))
     ].join('\n');
   
-    // Agregar BOM para caracteres especiales (acentos)
     const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
     
-    // Crear link de descarga
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
     
-    // Nombre del archivo con fecha actual
     const fecha = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
     link.setAttribute('href', url);
     link.setAttribute('download', `denuncias_${fecha}.csv`);
