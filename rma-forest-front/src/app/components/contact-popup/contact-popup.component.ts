@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ApiService } from '../../../services/api/api.service';
+import { CaptchaService } from '../../services/captcha.service';
 
 @Component({
   selector: 'app-contact-popup',
@@ -35,7 +36,10 @@ export class ContactPopupComponent {
     privacy: false
   };
 
-  constructor(private api: ApiService) {}
+  constructor(
+    private api: ApiService,
+    private captchaService: CaptchaService
+  ) {}
 
   open() {
     this.visible = true;
@@ -48,20 +52,19 @@ export class ContactPopupComponent {
     this.closed.emit();
   }
 
-  onSubmit() {
+  async onSubmit() {
+    
     if (!this.form.privacy) {
       alert('Debes aceptar la política de privacidad');
       return;
     }
 
     this.loading = true;
+    try {
+      const token = await this.captchaService.executeCaptcha('form_contact');
+      const payload = { ...this.form, recaptchaToken: token };
 
-    this.api.post('contact/send', {
-      nombre: this.form.nombre,
-      email: this.form.email,
-      mensaje: this.form.mensaje,
-      privacy: this.form.privacy
-    }).subscribe({
+    this.api.post('contact/send', payload).subscribe({
       next: (res: any) => {
         alert(res.message);
         if (res.success) {
@@ -75,5 +78,10 @@ export class ContactPopupComponent {
         this.loading = false;
       }
     });
+    
+  } catch (error) {
+    alert('Error al verificar el captcha. Intenta nuevamente.');
+    this.loading = false;
+  }
   }
 }

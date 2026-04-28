@@ -6,7 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
 import { ApiService } from '../../services/api/api.service';
+import { CaptchaService } from '../services/captcha.service';
 
 @Component({
   selector: 'app-complaints',
@@ -19,6 +21,7 @@ import { ApiService } from '../../services/api/api.service';
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
+    MatSelectModule, // ← agregar
   ],
   templateUrl: './complaints.component.html',
   styleUrls: ['./complaints.component.scss']
@@ -30,31 +33,117 @@ export class ComplaintsComponent {
     name: '',
     email: '',
     subject: '',
-    message: ''
+    subjectOther: '',
+    relationship: '',
+    relationshipOther:'',
+    location: '',
+    incidentDate: '',
+    message: '',
+    accused: ''
   };
 
-  constructor(private api: ApiService) {} // ← inyecta ApiService
+  // Opciones para el select de asunto
+  subjectOptions = [
+    'Delito comercial',
+    'Acoso Laboral',
+    'Acoso Sexual',
+    'Delito ambiental',
+    'Violencia en el trabajo',
+    'Otros'
+  ];
 
-  onSubmit() {
-    // Validaciones
-    if (!this.form.subject || !this.form.message) {
-      alert('Subject and message are required');
+  // Opciones para relación con la empresa
+  relationshipOptions = [
+    'Postulante',
+    'Cliente',
+    'Colaborador',
+    'Proveedor',
+    'Contratista',
+    'Otro'
+  ];
+
+  constructor(private api: ApiService, private captchaService: CaptchaService) {}
+
+  // En el componente
+onSubjectChange() {
+  if (this.form.subject !== 'Otros') {
+    this.form.subjectOther = ''; // Limpia el campo si no está seleccionado "Otros"
+  }
+}
+
+onRelationshipChange() {
+  if (this.form.relationship !== 'Otro') {
+    this.form.relationshipOther = ''; // Limpia el campo si no está seleccionado "Otro"
+  }
+}
+
+  async onSubmit() {
+    // Determinar el valor final según selección
+    const finalSubject = this.form.subject === 'Otros' ? this.form.subjectOther : this.form.subject;
+    const finalRelationship = this.form.relationship === 'Otro' ? this.form.relationshipOther : this.form.relationship;
+
+    // Validación específica para "Otros"
+    if (this.form.subject === 'Otros' && !this.form.subjectOther) {
+      alert('Debes especificar el asunto');
       return;
     }
 
+    if (this.form.relationship === 'Otro' && !this.form.relationshipOther) {
+      alert('Debes especificar tu relación con la empresa');
+      return;
+    }
+    // Validar asunto
+    if (!this.form.subject) {
+      alert('Debes seleccionar un asunto');
+      return;
+    }
+    if (this.form.subject === 'Otros' && !this.form.subjectOther) {
+      alert('Debes especificar el asunto');
+      return;
+    }
+  
+    // Validar relación
+    if (!this.form.relationship) {
+      alert('Debes seleccionar tu relación con la empresa');
+      return;
+    }
+    if (this.form.relationship === 'Otro' && !this.form.relationshipOther) {
+      alert('Debes especificar tu relación con la empresa');
+      return;
+    }
+  
+    // Validar descripción
+    if (!this.form.message) {
+      alert('Debes describir los hechos con detalle');
+      return;
+    }
+  
+    // Validar email si no es anónimo
     if (!this.form.isAnonymous && !this.form.email) {
-      alert('Email is required for non-anonymous complaints');
+      alert('Email es requerido para denuncias no anónimas');
       return;
     }
-
+    let captchaToken = '';
+  try {
+    captchaToken = await this.captchaService.executeCaptcha('submit_complaint');
+  } catch (error) {
+    alert('Error al verificar el captcha. Intenta nuevamente.');
+    return;
+  }
+  
     this.loading = true;
-
+  
     this.api.post('complaints/create', {
-      subject: this.form.subject,
+      subject: finalSubject,
       message: this.form.message,
+      relationship: finalRelationship,
+      location: this.form.location,
+      incidentDate: this.form.incidentDate,
+      accused: this.form.accused,
       name: this.form.isAnonymous ? null : this.form.name,
       email: this.form.isAnonymous ? null : this.form.email,
-      isAnonymous: this.form.isAnonymous
+      isAnonymous: this.form.isAnonymous,
+      recaptchaToken:captchaToken
     }).subscribe({
       next: (res: any) => {
         alert(res.message);
@@ -65,14 +154,20 @@ export class ComplaintsComponent {
             name: '',
             email: '',
             subject: '',
-            message: ''
+            subjectOther: '',
+            relationship: '',
+            relationshipOther: '',
+            location: '',
+            incidentDate: '',
+            message: '',
+            accused: ''
           };
         }
         this.loading = false;
       },
       error: (err) => {
         console.error('Error:', err);
-        alert('Error submitting complaint. Please try again.');
+        alert('Error al enviar la denuncia. Intenta nuevamente.');
         this.loading = false;
       }
     });

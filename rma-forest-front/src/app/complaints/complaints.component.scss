@@ -3,6 +3,7 @@
 // ==========================================
 $primary: #2e7d32;
 $primary-dark: #1b5e20;
+$primary-light: #e8f5e9;
 $text-muted: #666;
 $white: #ffffff;
 $gray-light: #f5f5f5;
@@ -208,6 +209,73 @@ $gray-light: #f5f5f5;
     
     &:active {
       transform: scale(0.98);
+    }
+  }
+}
+
+// ==========================================
+// ESTILOS PARA SELECTS (como en admin panel)
+// ==========================================
+
+.complaints-form {
+  // Estilos para el select cerrado
+  ::ng-deep .mat-mdc-select-trigger {
+    height: auto !important;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+  }
+
+  ::ng-deep .mat-mdc-select-value-text {
+    font-size: 0.9rem;
+    color: $primary-dark;
+  }
+
+  ::ng-deep .mat-mdc-select-arrow {
+    color: $text-muted;
+  }
+
+  ::ng-deep .mat-mdc-select-placeholder {
+    color: $text-muted !important;
+    opacity: 0.7 !important;
+    font-size: 0.9rem !important;
+  }
+
+  // Ocultar subscript (espacio inferior)
+  ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none !important;
+  }
+
+  ::ng-deep .mat-mdc-form-field-wrapper {
+    padding-bottom: 0 !important;
+  }
+}
+
+// ==========================================
+// ESTILOS PARA EL PANEL DE OPCIONES (dropdown)
+// ==========================================
+::ng-deep .mat-mdc-select-panel {
+  border-radius: 16px !important;
+  margin-top: 8px !important;
+  background-color: white !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  
+  .mat-mdc-option {
+    font-size: 0.9rem;
+    font-weight: 500;
+    background-color: white !important;
+    color: $primary-dark;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background-color: $primary-light !important;
+      color: $primary-dark;
+    }
+    
+    // Opción seleccionada
+    &.mat-mdc-option-active {
+      background-color: $primary !important;
+      color: white !important;
     }
   }
 }

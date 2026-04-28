@@ -30,11 +30,17 @@ export class EmailService {
     replyTo?: string;
   }) {
     try {
+      const htmlWithLogo = `
+      <div style="text-align: center; margin-bottom: 20px;">
+        <img src="https://rmaforest.cl/assets/logos/logo-horizontal.png" alt="RMA Forest" style="max-width: 200px;">
+      </div>
+      ${options.html}
+    `;
       const mailOptions = {
         from: options.from || `"RMA Forest" <${this.configService.get('SMTP_USER')}>`,
         to: options.to,
         subject: options.subject,
-        html: options.html,
+        html: htmlWithLogo,
         replyTo: options.replyTo,
       };
 

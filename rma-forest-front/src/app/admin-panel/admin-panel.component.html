@@ -89,7 +89,26 @@
           <mat-icon>visibility_off</mat-icon>
           <span>Denuncia anónima</span>
         </div>
-      </div>
+        <!-- Dentro de complaint-card, después de card-footer -->
+<!-- Nuevos campos (dos columnas en PC, una en móvil) -->
+<div class="complaint-details">
+  <div class="detail-row" *ngIf="item.relationship">
+    <mat-icon>business</mat-icon>
+    <span><strong>Relación:</strong> {{ item.relationship }}</span>
+  </div>
+  <div class="detail-row" *ngIf="item.location">
+    <mat-icon>place</mat-icon>
+    <span><strong>Lugar:</strong> {{ item.location }}</span>
+  </div>
+  <div class="detail-row" *ngIf="item.incidentDate">
+    <mat-icon>event</mat-icon>
+    <span><strong>Fecha del incidente:</strong> {{ item.incidentDate | date:'dd/MM/yyyy' }}</span>
+  </div>
+  <div class="detail-row" *ngIf="item.accused">
+    <mat-icon>person_outline</mat-icon>
+    <span><strong>Denunciado:</strong> {{ item.accused }}</span>
+  </div>
+</div>
     
       <!-- Estado (solo visible en móvil) -->
       <div *ngIf="editingId !== item.id" class="status-mobile">

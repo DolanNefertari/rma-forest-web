@@ -12,6 +12,12 @@ export class ComplaintsController {
     name?: string;
     email?: string;
     isAnonymous: boolean;
+    recaptchaToken: string;
+    // Nuevos campos
+    relationship?: string;
+    location?: string;
+    incidentDate?: string; // El frontend lo envía como string, puedes convertirlo a Date
+    accused?: string;
   }) {
     try {
       const complaint = await this.complaintsService.create({
@@ -20,8 +26,13 @@ export class ComplaintsController {
         name: body.isAnonymous ? undefined : body.name,
         email: body.isAnonymous ? undefined : body.email,
         isAnonymous: body.isAnonymous,
+        recaptchaToken: body.recaptchaToken,
+        relationship: body.relationship,
+        location: body.location,
+        incidentDate: body.incidentDate ? new Date(body.incidentDate) : undefined,
+        accused: body.accused,
       });
-      return { success: true, message: 'Complaint submitted successfully', id: complaint.id };
+      return { success: true, message: 'Complaint submitted successfully', id: (complaint as any).id };
     } catch (error) {
       return { success: false, message: 'Error submitting complaint' };
     }

@@ -148,3 +148,8 @@ small, .tag, .badge, .caption, .section-tag, .about-tag {
 .text-right {
   text-align: right;
 }
+.grecaptcha-badge {
+  bottom: 90px !important;
+  transform: scale(0.85); /* ← lo hace un 15% más pequeño */
+  opacity: 0.9; /* ← opcional: un poco más sutil */
+}

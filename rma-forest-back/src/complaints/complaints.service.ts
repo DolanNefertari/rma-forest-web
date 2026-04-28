@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Complaint } from '../entities/complaints.entity';
 import { EmailService } from '../email/email.service';
+import { CaptchaService } from '../captcha/captcha.service';
 
 @Injectable()
 export class ComplaintsService {
@@ -10,6 +11,7 @@ export class ComplaintsService {
     @InjectRepository(Complaint)
     private complaintsRepository: Repository<Complaint>,
     private emailService: EmailService,
+    private captchaService: CaptchaService,
   ) {}
 
   async create(data: {
@@ -18,7 +20,21 @@ export class ComplaintsService {
     name?: string;
     email?: string;
     isAnonymous: boolean;
+    recaptchaToken: string;
+    relationship?: string;
+    location?: string;
+    incidentDate?: Date;
+    accused?: string;
   }) {
+    const isCaptchaValid = await this.captchaService.verifyToken(data.recaptchaToken);
+
+    if (!isCaptchaValid) {
+      return {
+        success: false,
+        message: 'Error al verificar el captcha. Intenta nuevamente.',
+      };
+    }
+
     const complaint = this.complaintsRepository.create(data);
     const saved = await this.complaintsRepository.save(complaint);
 

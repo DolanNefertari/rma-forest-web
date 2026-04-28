@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-admin-login',
@@ -42,7 +43,7 @@ export class AdminLoginComponent {
     this.loading = true;
     this.error = false;
 
-    this.http.post('http://localhost:3000/auth/login', {
+    this.http.post(`${environment.apiUrl}/auth/login`, {
       username: this.username,
       password: this.password
     }).subscribe({

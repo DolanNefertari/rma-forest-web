@@ -13,6 +13,7 @@ import { EmailModule } from './email/email.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
 import { AuthController } from './auth/auth.controller';
+import { CaptchaModule } from './captcha/captcha.module';
 
 @Module({
   imports: [
@@ -42,7 +43,9 @@ import { AuthController } from './auth/auth.controller';
       ContactModule,
       ComplaintsModule,
       EmailModule,
-      AuthModule],
+      AuthModule,
+      CaptchaModule,
+    ],
   controllers: [AppController, ComplaintsController, AuthController],
   providers: [AppService, ComplaintsService, EmailService, AuthService],
 })

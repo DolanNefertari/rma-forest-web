@@ -11,6 +11,7 @@ export class ContactController {
       email: string;
       mensaje: string;
       privacy: boolean;
+      recaptchaToken: string;
     }) {
       if (!body.nombre || !body.email || !body.mensaje) {
         return { success: false, message: 'Todos los campos son obligatorios' };
@@ -20,6 +21,9 @@ export class ContactController {
       }
       if (!this.isValidEmail(body.email)) {
         return { success: false, message: 'El email no es válido' };
+      }
+      if (!body.recaptchaToken) {
+        return { success: false, message: 'El captcha es obligatorio' };
       }
   
       const result = await this.contactService.sendEmail(body);

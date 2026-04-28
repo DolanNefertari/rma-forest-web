@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -6,8 +6,11 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')
-  async login(@Body() body: { username: string; password: string }) {
-    const isValid = await this.authService.validateUser(body.username, body.password);
+  async login(@Body() body: { username: string; password: string }, @Req() request: Request) {
+    console.log('Headers completos:', JSON.stringify(request.headers));
+    const ip = request.headers['x-forwarded-for'] as string;
+    const isValid = await this.authService.validateUser(body.username, body.password, ip);
+
     if (isValid) {
       return { success: true, message: 'Login exitoso' };
     }

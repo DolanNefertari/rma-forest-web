@@ -81,7 +81,7 @@ $transition-normal: 0.3s ease;
     }
 
     .spacer-between {
-      width: calc(100% - (0.1 * 100%) - 150px - 400px);
+      width: calc(100% - (0.1 * 100%) - 150px - 500px);
     }
 
     .logo {
@@ -278,7 +278,7 @@ $transition-normal: 0.3s ease;
   color: white;
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../../assets/images/1920/7002391/charity-hero.jpg') center/cover no-repeat;
   background-size: cover;
-  background-position: center;
+  background-position: top center;
   margin-top: 0;
   padding-top: 80px;
 

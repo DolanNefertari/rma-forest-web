@@ -1,15 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { EmailService } from '../email/email.service';
+import { CaptchaService } from '../captcha/captcha.service';
 
 @Injectable()
 export class ContactService {
-  constructor(private emailService: EmailService) {}
+  constructor(private emailService: EmailService, private captchaService: CaptchaService) {}
 
   async sendEmail(data: {
     nombre: string;
     email: string;
     mensaje: string;
+    recaptchaToken: string;
   }) {
+    const isCaptchaValid = await this.captchaService.verifyToken(data.recaptchaToken);
+
+    if (!isCaptchaValid) {
+      return {
+        success: false,
+        message: 'Error al verificar el captcha. Intenta nuevamente.',
+      };
+    }
+
     const html = `
       <h2>📬 Nuevo mensaje desde el sitio web</h2>
       <p><strong>👤 Nombre:</strong> ${data.nombre}</p>
