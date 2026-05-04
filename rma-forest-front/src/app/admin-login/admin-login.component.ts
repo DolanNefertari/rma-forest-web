@@ -50,6 +50,7 @@ export class AdminLoginComponent {
       next: (res: any) => {
         if (res.success) {
           sessionStorage.setItem('adminAuth', 'true');
+          localStorage.setItem('token', res.token);
           this.router.navigate(['/admin']);
         } else {
           this.error = true;

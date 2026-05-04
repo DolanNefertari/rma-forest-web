@@ -1,5 +1,6 @@
-import { Controller, Post, Body, Get, Put, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, Put, Param, UseGuards } from '@nestjs/common';
 import { ComplaintsService } from './complaints.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('complaints')
 export class ComplaintsController {
@@ -38,11 +39,13 @@ export class ComplaintsController {
   }
 
   @Get('all')
+  @UseGuards(AuthGuard('jwt'))
   async findAll() {
     return this.complaintsService.findAll();
   }
 
   @Put(':id/status')
+  @UseGuards(AuthGuard('jwt'))
   async updateStatus(@Param('id') id: number, @Body() body: { status: string }) {
     return this.complaintsService.updateStatus(id, body.status);
   }

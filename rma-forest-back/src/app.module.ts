@@ -14,6 +14,7 @@ import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
 import { AuthController } from './auth/auth.controller';
 import { CaptchaModule } from './captcha/captcha.module';
+import { JwtStrategy } from './auth/jwt.strategy';
 
 @Module({
   imports: [
