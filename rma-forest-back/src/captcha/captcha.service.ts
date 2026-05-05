@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
+import { config } from 'dotenv';
+config();
 
 @Injectable()
 export class CaptchaService {
@@ -11,7 +13,7 @@ export class CaptchaService {
       const response = await firstValueFrom(
         this.httpService.post('https://www.google.com/recaptcha/api/siteverify', null, {
           params: {
-            secret: '6LeEIMIsAAAAAJg_MNuoM0vowQ78-Y7W0TdQzo-_',
+            secret: process.env.CAPTCHA_SECRET,
             response: token,
           },
         })
