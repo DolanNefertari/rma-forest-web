@@ -57,9 +57,6 @@ export class EmailService {
           padding: 20px;
           text-align: center;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-          img{
-            max-height: 150px;
-          }
         }
         .email-body {
           padding: 30px;
@@ -98,7 +95,8 @@ export class EmailService {
     <body style="margin: 0; padding: 20px; background-color: #f4f7f9;">
       <div class="email-container">
         <div class="email-header">
-          <img src="https://rmaforest.cl/assets/logos/logo-horizontal.png" alt="RMA Forest">
+          <img src="https://rmaforest.cl/assets/logos/logo-horizontal.png" alt="RMA Forest"
+          style="max-height: 150px; width: auto; display: block; margin: 0 auto; object-fit: contain;">
         </div>
         <div class="email-body">
           ${options.html}
