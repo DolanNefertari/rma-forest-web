@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -40,7 +40,8 @@ export class ContactPopupComponent {
   constructor(
     private api: ApiService,
     private captchaService: CaptchaService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   open() {
@@ -72,6 +73,7 @@ export class ContactPopupComponent {
           this.alertService.success("Su mensaje ha sido enviado correctamente, pronto nos pondremos en contacto con usted.");
           this.form = { nombre: '', email: '', mensaje: '', privacy: false };
           this.close();
+          this.cdr.detectChanges();
         }
         this.loading = false;
       },

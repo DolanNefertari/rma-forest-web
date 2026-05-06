@@ -30,8 +30,7 @@ export class EmailService {
     replyTo?: string;
   }) {
     try {
-      const htmlWithTemplate = `  
-    <!DOCTYPE html>
+      const htmlWithTemplate = `  <!DOCTYPE html>
     <html>
     <head>
       <meta charset="UTF-8">
@@ -54,12 +53,11 @@ export class EmailService {
         }
         .email-header {
           background-color: #ffffff;
-          padding: 20px;
           text-align: center;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
         .email-body {
-          padding: 30px;
+          padding: 15px;
           color: #1d3439;
           line-height: 1.5;
         }
@@ -92,11 +90,11 @@ export class EmailService {
         }
       </style>
     </head>
-    <body style="margin: 0; padding: 20px; background-color: #f4f7f9;">
+    <body style="margin: 0; padding: 10px; background-color: #f4f7f9;">
       <div class="email-container">
         <div class="email-header">
-          <img src="https://rmaforest.cl/assets/logos/logo-horizontal.png" alt="RMA Forest"
-          style="max-height: 150px; width: auto; display: block; margin: 0 auto; object-fit: contain;">
+          <img src="https://rmaforest.cl/assets/logos/logo-horizontal-recortado.png" alt="RMA Forest"
+          style="max-height: 100px; display: block; object-fit: contain;margin: 0 auto;"> 
         </div>
         <div class="email-body">
           ${options.html}
@@ -107,8 +105,7 @@ export class EmailService {
         </div>
       </div>
     </body>
-    </html>
-    `;
+    </html>`;
       const mailOptions = {
         from: options.from || `"RMA Forest" <${this.configService.get('SMTP_USER')}>`,
         to: options.to,

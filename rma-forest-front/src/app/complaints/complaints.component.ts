@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,6 +10,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { ApiService } from '../../services/api/api.service';
 import { CaptchaService } from '../services/captcha.service';
 import { AlertService } from '../services/alert.service';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { DateAdapter, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import { ChileanDateAdapter } from '../adapters/chilean-date-adapter';
 
 @Component({
   selector: 'app-complaints',
@@ -23,12 +26,20 @@ import { AlertService } from '../services/alert.service';
     MatInputModule,
     MatCheckboxModule,
     MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   templateUrl: './complaints.component.html',
-  styleUrls: ['./complaints.component.scss']
+  styleUrls: ['./complaints.component.scss'],
+  providers: [
+    { provide: DateAdapter, useClass: ChileanDateAdapter },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-CL' }
+  ]
 })
 export class ComplaintsComponent {
   loading = false;
+  maxDatePicker: Date;
+
   form = {
     isAnonymous: false,
     name: '',
@@ -65,13 +76,17 @@ export class ComplaintsComponent {
   constructor(
     private api: ApiService, 
     private captchaService: CaptchaService,
-    private alertService: AlertService
-  ) {}
+    private alertService: AlertService,
+    private cdr: ChangeDetectorRef
+  ) {
+    this.maxDatePicker = new Date();
+  }
 
 onSubjectChange() {
   if (this.form.subject !== 'Otros') {
     this.form.subjectOther = '';
   }
+  
 }
 
 onRelationshipChange() {
@@ -159,6 +174,7 @@ onRelationshipChange() {
             message: '',
             accused: ''
           };
+          this.cdr.detectChanges();
         } else {
           this.alertService.error('Error al enviar la denuncia. Intenta nuevamente.');
         }
