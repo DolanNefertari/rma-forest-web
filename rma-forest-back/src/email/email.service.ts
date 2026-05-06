@@ -95,7 +95,7 @@ export class EmailService {
     <body style="margin: 0; padding: 20px; background-color: #f4f7f9;">
       <div class="email-container">
         <div class="email-header">
-          <img src="https://rmaforest.cl/assets/images/logos/logo-horizontal.png" alt="RMA Forest">
+          <img src="https://rmaforest.cl/assets/logos/logo-horizontal.png" alt="RMA Forest">
         </div>
         <div class="email-body">
           ${options.html}
@@ -116,7 +116,9 @@ export class EmailService {
         replyTo: options.replyTo,
       };
 
+      console.log('📧 Intentando enviar correo a:', options.to);
       await this.transporter.sendMail(mailOptions);
+      console.log('📧 Correo enviado correctamente');
       return { success: true };
     } catch (error) {
       console.error('Error sending email:', error);

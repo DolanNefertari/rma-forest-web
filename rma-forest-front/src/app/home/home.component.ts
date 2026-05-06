@@ -12,6 +12,8 @@ import { HttpClient } from '@angular/common/http';
 import { ContactPopupComponent } from '../components/contact-popup/contact-popup.component';
 import { RouterModule } from '@angular/router';
 import { AlertService } from '../services/alert.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 @Component({
   standalone: true,
@@ -26,14 +28,17 @@ import { AlertService } from '../services/alert.service';
     MatIconModule,
     CommonModule,
     ContactPopupComponent,
-    RouterModule
+    RouterModule,
+    FontAwesomeModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements AfterViewInit{
   @ViewChild("contactPopup") contactPopup!: ContactPopupComponent;
-  @ViewChild("footerSection") footerSection!: ElementRef; @ViewChild('statNumbers') statNumbers!: ElementRef;
+  @ViewChild("footerSection") footerSection!: ElementRef; 
+  @ViewChild('statNumbers') statNumbers!: ElementRef;
+  faWhatsapp = faWhatsapp;
 
   private http = inject(HttpClient);
   serviceModel = new ServiceModel();

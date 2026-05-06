@@ -13,7 +13,7 @@ export class CaptchaService {
       const response = await firstValueFrom(
         this.httpService.post('https://www.google.com/recaptcha/api/siteverify', null, {
           params: {
-            secret: process.env.CAPTCHA_SECRET,
+            secret: process.env.RECAPTCHA_SECRET_KEY,
             response: token,
           },
         })

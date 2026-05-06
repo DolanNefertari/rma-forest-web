@@ -26,25 +26,38 @@ export class ComplaintsService {
     incidentDate?: Date;
     accused?: string;
   }) {
+    try {
+    console.log('🔵 1. Iniciando creación de denuncia');
+    console.log('Datos recibidos:', JSON.stringify(data, null, 2));
     const isCaptchaValid = await this.captchaService.verifyToken(data.recaptchaToken);
+    console.log('🔵 2. Verificación de captcha:', isCaptchaValid);
 
     if (!isCaptchaValid) {
+      console.log('🔴 3. Captcha inválido, no se crea la denuncia');
       return {
         success: false,
         message: 'Error al verificar el captcha. Intenta nuevamente.',
       };
     }
-
+    console.log('🔵 4. Captcha válido, se crea la denuncia');
     const complaint = this.complaintsRepository.create(data);
     const saved = await this.complaintsRepository.save(complaint);
-
+    console.log('🔵 5. Denuncia creada en la base de datos');
     await this.sendInternalNotification(saved);
-
+    console.log('🔵 6. Notificación interna enviada');
     if (!data.isAnonymous && data.email) {
       await this.sendConfirmationToComplainant(saved);
     }
-
+    console.log('🔵 7. Confirmación enviada al denunciante');
+    console.log('🔵 8. Denuncia creada exitosamente:', JSON.stringify(saved, null, 2));
     return saved;
+  } catch (error) {
+    console.error('Error al crear la denuncia:', error);
+    return {
+      success: false,
+      message: 'Error al crear la denuncia. Intenta nuevamente.',
+    };
+  }
   }
 
   private async sendInternalNotification(complaint: Complaint) {

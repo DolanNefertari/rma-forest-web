@@ -68,8 +68,8 @@ export class ContactPopupComponent {
 
     this.api.post('contact/send', payload).subscribe({
       next: (res: any) => {
-        this.alertService.success("Su mensaje ha sido enviado correctamente, pronto nos pondremos en contacto con usted.");
         if (res.success) {
+          this.alertService.success("Su mensaje ha sido enviado correctamente, pronto nos pondremos en contacto con usted.");
           this.form = { nombre: '', email: '', mensaje: '', privacy: false };
           this.close();
         }

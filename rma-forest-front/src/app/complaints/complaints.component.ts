@@ -44,6 +44,7 @@ export class ComplaintsComponent {
   };
 
   subjectOptions = [
+    'Compliance',
     'Delito comercial',
     'Acoso Laboral',
     'Acoso Sexual',
@@ -143,8 +144,8 @@ onRelationshipChange() {
       recaptchaToken:captchaToken
     }).subscribe({
       next: (res: any) => {
-        this.alertService.success("Su denuncia ha sido enviada correctamente, pronto nos pondremos en contacto contigo.");
         if (res.success) {
+          this.alertService.success("Su denuncia ha sido enviada correctamente, pronto nos pondremos en contacto contigo.");
           this.form = {
             isAnonymous: false,
             name: '',
@@ -158,6 +159,8 @@ onRelationshipChange() {
             message: '',
             accused: ''
           };
+        } else {
+          this.alertService.error('Error al enviar la denuncia. Intenta nuevamente.');
         }
         this.loading = false;
       },
