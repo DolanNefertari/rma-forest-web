@@ -53,11 +53,14 @@ export class EmailService {
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
         .email-header {
-  background-color: #ffffff;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
+          background-color: #ffffff;
+          padding: 20px;
+          text-align: center;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+          img{
+            max-height: 150px;
+          }
+        }
         .email-body {
           padding: 30px;
           color: #1d3439;
