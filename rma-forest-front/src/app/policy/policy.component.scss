@@ -1,4 +1,4 @@
-@import '../../styles.scss'; 
+@import '../../styles.scss';
 
 $primary: #2e7d32;
 $primary-light: #e8f5e9;
@@ -15,143 +15,308 @@ $white: #ffffff;
   justify-content: center;
   padding: 5rem 1.5rem;
 
+  .policy-card {
+    max-width: 900px;
+    width: 100%;
+    background: $white;
+    border-radius: 32px;
+    padding: 2.5rem;
+    box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
 
-.policy-card {
-  max-width: 900px;
-  width: 100%;
-  background: white;
-  border-radius: 32px;
-  padding: 2.5rem;
-  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.1);
-  position: relative;  
-  overflow: hidden;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    height: 80%;
-    background: url('../../assets/logos/logo-vertical.png') no-repeat center;
-    background-size: contain;
-    opacity: 0.2;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .policy-header {
-    text-align: center;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid $primary-light;
-
-    .header-icon {
-      font-size: 3rem;
-      width: 3rem;
-      height: 3rem;
-      color: $primary;
-      margin-bottom: 1rem;
+    /*
+ * Logo de fondo.
+ * Se mantiene como marca de agua, pero con menor opacidad
+ * para que no interfiera con la lectura.
+ */
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      height: 80%;
+      background: url('../../assets/logos/logo-vertical.png') no-repeat center;
+      background-size: contain;
+      opacity: 0.08;
+      pointer-events: none;
+      z-index: 0;
     }
 
-    h1 {
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: $text-dark;
-      margin-bottom: 0.5rem;
+    /*
+ * Todo el contenido queda por encima
+ * de la marca de agua.
+ */
+    >* {
+      position: relative;
+      z-index: 1;
     }
 
-    .subtitle {
-      color: $text-muted;
-      font-size: 1rem;
-    }
-  }
-
-  .policy-content {
-    color: $text-dark;
-    line-height: 1.6;
-    text-align: justify;
-
-    .intro {
-      font-weight: 500;
-      margin-bottom: 1.5rem;
-    }
-
-    .policy-list {
-      margin: 1.5rem 0;
-      padding-left: 1.5rem;
-      
-      li {
-        margin-bottom: 0.75rem;
-        line-height: 1.5;
-        
-        &::marker {
-          color: $primary;
-          font-weight: bold;
-        }
-      }
-    }
-
-    .commitment {
-      margin: 1.5rem 0;
-      font-style: italic;
-      padding: 1rem;
-      background: $primary-light;
-      border-radius: 16px;
-    }
-
-    .signature {
+    .policy-header {
       text-align: center;
-      margin: 2rem 0 1.5rem;
-      padding-top: 1rem;
-      border-top: 1px solid #ddd;
-      
-      p {
-        font-size: 0.9rem;
-        
-        strong {
-          font-size: 1rem;
-          color: $primary;
-        }
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid $primary-light;
+
+      .header-icon {
+        font-size: 3rem;
+        width: 3rem;
+        height: 3rem;
+        color: $primary;
+        margin-bottom: 1rem;
+      }
+
+      h1 {
+        font-size: 1.6rem;
+        line-height: 1.35;
+        font-weight: 700;
+        color: $text-dark;
+        margin: 0 0 0.75rem;
+      }
+
+      .subtitle {
+        color: $text-muted;
+        font-size: 1rem;
+        font-weight: 500;
+        margin: 0;
       }
     }
 
-    .version-info {
-      font-size: 0.75rem;
-      color: $text-muted;
-      margin-top: 2rem;
-      padding-top: 1rem;
-      border-top: 1px solid #eee;
+    .policy-content {
+      position: relative;
+      color: $text-dark;
+      line-height: 1.7;
+      text-align: justify;
+
+      p {
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+      }
+
+      .intro {
+        font-weight: 500;
+        margin-bottom: 2rem;
+      }
+
+      /*
+   * Títulos de las nuevas secciones:
+   * "Para ello..."
+   * "Objetivos del SIG"
+   * "Valores Organizacionales"
+   */
+      h2 {
+        color: $primary-dark;
+        font-size: 1.15rem;
+        font-weight: 700;
+        line-height: 1.4;
+        margin: 2.5rem 0 1.25rem;
+        padding-bottom: 0.6rem;
+        border-bottom: 2px solid $primary-light;
+        text-align: left;
+      }
+
+      /*
+   * Lista de compromisos
+   */
+      .policy-list {
+        margin: 1.25rem 0 2rem;
+        padding-left: 1.5rem;
+
+        li {
+          margin-bottom: 1rem;
+          padding-left: 0.35rem;
+          line-height: 1.6;
+
+          &::marker {
+            color: $primary;
+            font-weight: bold;
+          }
+
+          strong {
+            color: $primary-dark;
+            font-weight: 700;
+          }
+        }
+      }
+
+      /*
+   * Listas numeradas:
+   * Objetivos del SIG
+   * Valores Organizacionales
+   */
+      .numbered-list {
+        padding-left: 1.75rem;
+
+        li {
+          padding-left: 0.4rem;
+          margin-bottom: 0.9rem;
+
+          &::marker {
+            color: $primary;
+            font-weight: 700;
+          }
+        }
+      }
+
+      /*
+   * Separación entre las grandes secciones
+   */
+      .policy-section {
+        margin-top: 2.5rem;
+      }
+
+      /*
+   * Compromiso final de la Gerencia
+   */
+      .commitment {
+        margin: 2.5rem 0 2rem;
+        padding: 1.25rem 1.5rem;
+        background: $primary-light;
+        border-left: 4px solid $primary;
+        border-radius: 0 16px 16px 0;
+        font-style: italic;
+        line-height: 1.7;
+      }
+
+      /*
+   * Firma
+   */
+      .signature {
+        text-align: center;
+        margin: 2.5rem 0 1rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #ddd;
+
+        p {
+          font-size: 0.9rem;
+          line-height: 1.5;
+          margin: 0;
+
+          strong {
+            font-size: 1rem;
+            color: $primary;
+          }
+        }
+      }
+
+      .version-info {
+        font-size: 0.75rem;
+        color: $text-muted;
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid #eee;
+      }
+    }
+
+
+  }
+}
+
+/*
+
+* Responsive
+  */
+@media (max-width: 768px) {
+  .policy-container {
+    padding: 2rem 1rem;
+    align-items: flex-start;
+
+    .policy-card {
+      padding: 1.5rem;
+      border-radius: 24px;
+
+      .policy-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1.25rem;
+
+
+        .header-icon {
+          font-size: 2.5rem;
+          width: 2.5rem;
+          height: 2.5rem;
+          margin-bottom: 0.75rem;
+        }
+
+        h1 {
+          font-size: 1.25rem;
+          line-height: 1.35;
+        }
+
+        .subtitle {
+          font-size: 0.85rem;
+        }
+
+
+      }
+
+      .policy-content {
+        font-size: 0.9rem;
+        line-height: 1.6;
+
+
+        h2 {
+          font-size: 1rem;
+          margin-top: 2rem;
+        }
+
+        .policy-list {
+          padding-left: 1.25rem;
+
+          li {
+            margin-bottom: 0.75rem;
+            padding-left: 0.2rem;
+          }
+        }
+
+        .numbered-list {
+          padding-left: 1.5rem;
+        }
+
+        .commitment {
+          padding: 1rem;
+          margin: 2rem 0;
+        }
+
+        .signature {
+          margin-top: 2rem;
+        }
+
+
+      }
     }
   }
 }
 
-// Responsive
-@media (max-width: 768px) {
+/*
+
+* Pantallas muy pequeñas
+  */
+@media (max-width: 480px) {
   .policy-container {
-    padding: 4rem 1rem;
-  }
+    padding: 1rem 0.75rem;
 
-  .policy-card {
-    padding: 1.5rem;
-  }
+    .policy-card {
+      padding: 1.25rem;
+      border-radius: 20px;
 
-  .policy-header {
-    h1 {
-      font-size: 1.2rem;
-    }
-    
-    .subtitle {
-      font-size: 0.85rem;
-    }
-  }
+      .policy-header {
+        h1 {
+          font-size: 1.1rem;
+        }
+      }
 
-  .policy-content {
-    font-size: 0.9rem;
-    
-    .policy-list li {
-      margin-bottom: 0.5rem;
+      .policy-content {
+        font-size: 0.85rem;
+
+
+        h2 {
+          font-size: 0.95rem;
+        }
+
+      }
     }
   }
-}}
+}
