@@ -474,6 +474,14 @@ $white: #ffffff;
   margin: 1.5rem 0 2.5rem;
 
   /* ==========================================
+     La 4ta card (el diploma) se centra en la fila 2
+     ========================================== */
+  .cert-card:nth-child(4) {
+    grid-column: 2 / 3;
+    margin-top: 0.5rem;
+  }
+
+  /* ==========================================
      CARD
      ========================================== */
   .cert-card {
@@ -612,6 +620,12 @@ $white: #ffffff;
 @media (max-width: 900px) {
   .certifications-grid {
     grid-template-columns: repeat(2, 1fr);
+
+    /* Reseteamos el centrado del diploma porque ya no hay 3 columnas */
+    .cert-card:nth-child(4) {
+      grid-column: auto;
+      margin-top: 0;
+    }
   }
 }
 

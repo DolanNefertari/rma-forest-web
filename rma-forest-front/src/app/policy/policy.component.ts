@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { CertModel, SigModel, StopWorkModel } from './model/policy.model';
 
 @Component({
   selector: 'app-policy',
@@ -13,4 +14,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 })
 export class PolicyComponent {
   selectedPolicy: 'sig' | 'stop-work' | 'certifications' = 'sig';
+  sig = new SigModel();
+  stopWork = new StopWorkModel();
+  certificaciones = new CertModel();
 }
